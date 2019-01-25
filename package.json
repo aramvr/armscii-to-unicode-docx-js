@@ -1,0 +1,26 @@
+{
+  "name": "hayeren",
+  "version": "1.0.0",
+  "description": "Converting old armenian character to new unicode",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "archiver": "^3.0.0",
+    "docx": "^4.7.0",
+    "docx-extractor": "^1.1.4",
+    "extract-zip": "^1.6.7",
+    "jsreport-core": "^2.3.3",
+    "jsreport-html-embedded-in-docx": "^1.0.1",
+    "mammoth": "^1.4.7",
+    "mkdir": "0.0.2",
+    "officegen": "^0.4.7",
+    "rimraf": "^2.6.3",
+    "textract": "^2.4.0",
+    "unzip": "^0.1.11",
+    "zlib": "^1.0.5"
+  }
+}
