@@ -1,83 +1,58 @@
 const fs = require("fs");
-const archiver = require("archiver");
-const convertor = require("./convertor");
-const unzip = require("unzip");
-const extract = require("extract-zip");
+const os = require("os");
+const express = require("express");
+const app = express();
+const busboy = require("connect-busboy");
+const uniqueFilename = require("unique-filename");
+const convertDocx = require("./convertDocx");
+const path = require("path");
+const rimraf = require("rimraf");
 
-var rimraf = require("rimraf");
+const router = express.Router();
 
-const fileName = makeid();
+app.use(express.json());
+app.use(busboy());
+app.use("/output", express.static("output"));
 
-const uploadedDocument = __dirname + "/ansi3.docx";
-const documentPath = `./extract/${fileName}/word/document.xml`;
-const archivePath = `${__dirname}/extract/${fileName}`;
-const outputFile = `./output/${fileName}.docx`;
-
-// init
-convertDocx();
-
-function extractDocx(uploadedDocument) {
-  return new Promise(function(resolve, reject) {
-    extract(uploadedDocument, { dir: archivePath }, function(err) {
-      if (err) reject(err);
-      else {
-        console.log("The archive was extracted!");
-        resolve();
-      }
-    });
+const root = router.get("/", async (req, res) => {
+  res.send({
+    version: "1.0.0"
   });
-}
+});
 
-function convertToUnicode(documentPath) {
-  return new Promise(function(resolve, reject) {
-    const document = fs.readFile(documentPath, "utf8", function(err, contents) {
-      const unicode = convertor.armsciiToUnicode(contents);
-      fs.writeFile(documentPath, unicode, function(err) {
-        if (err) {
-          reject();
-        }
-        console.log("The characters are converted!");
-        resolve();
+const convert = router.post("/", async (req, res) => {
+  const randomTmpfile = uniqueFilename(os.tmpdir());
+  console.log(randomTmpfile);
+  let fstream;
+  req.pipe(req.busboy);
+  req.busboy.on("file", async function(fieldname, file, filename) {
+    if (path.extname(filename) !== ".docx") {
+      res.status(500).send({
+        errorMessage: "File must be .docx"
+      });
+      await rimraf.sync(randomTmpfile);
+      return;
+    }
+    console.log("Uploading: " + filename);
+    fstream = fs.createWriteStream(randomTmpfile);
+    file.pipe(fstream);
+    fstream.on("close", function() {
+      convertDocx.convert(randomTmpfile, filename).then(downloadUrl => {
+        res.send({
+          downloadLink: serverUrl(req, downloadUrl)
+        });
       });
     });
   });
-}
-function saveFile() {
-  return new Promise(function(resolve, reject) {
-    var output = fs.createWriteStream(outputFile);
-    var archive = archiver("zip");
-    archive.pipe(output);
-    archive.directory(archivePath, false);
-    archive.finalize();
+});
 
-    output.on("close", function() {
-      console.log(archive.pointer() + " total bytes");
-      console.log(
-        "archiver has been finalized and the output file descriptor has closed."
-      );
-      resolve();
-    });
-    archive.on("error", function(err) {
-      reject(err);
-    });
-  });
-}
+app.use("/api/", root);
+app.use("/api/convert/", convert);
 
-async function convertDocx() {
-  await extractDocx(uploadedDocument);
-  await convertToUnicode(documentPath);
-  await saveFile();
-  await rimraf.sync(archivePath);
-  console.log("done");
-}
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log("Listening on port " + port));
 
-function makeid() {
-  var text = "";
-  var possible =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-  for (var i = 0; i < 15; i++)
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-  return text;
-}
+const serverUrl = (req, path) => {
+  const url = req.protocol + "://" + req.get("host") + "/" + path;
+  return url;
+};
