@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/webfalcon/armscii-to-unicode-docx-js/issues"
   },
-  "homepage": "https://github.com/webfalcon/armscii-to-unicode-docx-js#readme"
+  "homepage": "https://github.com/webfalcon/armscii-to-unicode-docx-js#readme",
+  "devDependencies": {
+    "concurrently": "^4.1.0"
+  }
 }
