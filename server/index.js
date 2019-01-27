@@ -10,6 +10,14 @@ const rimraf = require("rimraf");
 
 const router = express.Router();
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 app.use(express.json());
 app.use(busboy());
 app.use("/output", express.static("output"));
@@ -22,7 +30,6 @@ const root = router.get("/", async (req, res) => {
 
 const convert = router.post("/", async (req, res) => {
   const randomTmpfile = uniqueFilename(os.tmpdir());
-  console.log(randomTmpfile);
   let fstream;
   req.pipe(req.busboy);
   req.busboy.on("file", async function(fieldname, file, filename) {
@@ -49,7 +56,7 @@ const convert = router.post("/", async (req, res) => {
 app.use("/api/", root);
 app.use("/api/convert/", convert);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 app.listen(port, () => console.log("Listening on port " + port));
 
 const serverUrl = (req, path) => {

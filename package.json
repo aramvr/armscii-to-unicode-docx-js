@@ -1,21 +1,22 @@
 {
-  "name": "hayeren",
+  "name": "armscii-to-unicode-docx-js",
   "version": "1.0.0",
-  "description": "Converting old armenian character to new unicode",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "client": "cd client && npm start",
+    "server": "cd server && npm start",
+    "start": "concurrently \"npm run server\" \"npm run client\""
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webfalcon/armscii-to-unicode-docx-js.git"
+  },
+  "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "archiver": "^3.0.0",
-    "connect-busboy": "0.0.2",
-    "express": "^4.16.4",
-    "extract-zip": "^1.6.7",
-    "rimraf": "^2.6.3",
-    "textract": "^2.4.0",
-    "unique-filename": "^1.1.1",
-    "unzip": "^0.1.11"
-  }
+  "bugs": {
+    "url": "https://github.com/webfalcon/armscii-to-unicode-docx-js/issues"
+  },
+  "homepage": "https://github.com/webfalcon/armscii-to-unicode-docx-js#readme"
 }
