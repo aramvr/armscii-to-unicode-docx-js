@@ -1,7 +1,22 @@
 import React, { Component } from "react";
 import { FilePond } from "react-filepond";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import Button from "@material-ui/core/Button";
+import styled from "styled-components";
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+
 import "filepond/dist/filepond.min.css";
-import Loader from "react-loader-spinner";
+
+const ButtonWrapper = styled.div`
+  float: left;
+  margin-right: 10px;
+  display: inline-block;
+  margin-top: 35px;
+`;
+
+const LoaderWrapper = styled.div`
+  margin-top: 50px;
+`;
 
 class UploadFile extends Component {
   constructor(props) {
@@ -18,6 +33,13 @@ class UploadFile extends Component {
   }
 
   upload = file => {
+    console.log(file);
+    const ext = file.name.split(".").pop();
+    if (ext !== "docx") {
+      alert("Ֆայլի ֆորմատը սխալ է։");
+      this.reset();
+      return;
+    }
     const formData = new FormData();
     formData.append("document", file);
 
@@ -55,7 +77,9 @@ class UploadFile extends Component {
         {this.state.downloadLink === "" ? (
           <div>
             {this.state.uploading ? (
-              <Loader type="Puff" color="#00BFFF" height="100" width="100" />
+              <LoaderWrapper>
+                <LinearProgress />
+              </LoaderWrapper>
             ) : (
               <FilePond
                 ref={ref => (this.pond = ref)}
@@ -70,8 +94,20 @@ class UploadFile extends Component {
           </div>
         ) : (
           <div>
-            <p>Download from here: {this.state.downloadLink}</p>
-            <button onClick={() => this.reset()}>Փոխակերպել այլ ֆայլ</button>
+            <ButtonWrapper>
+              <Button
+                variant="contained"
+                color="primary"
+                href={this.state.downloadLink}
+              >
+                Ներբեռնել
+              </Button>
+            </ButtonWrapper>
+            <ButtonWrapper>
+              <Button variant="contained" onClick={() => this.reset()}>
+                Փոխակերպել այլ ֆայլ
+              </Button>
+            </ButtonWrapper>
           </div>
         )}
       </div>
