@@ -4,9 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import { FaPaypal, FaGithub, FaFacebookMessenger } from "react-icons/fa";
 
 const styles = {
@@ -36,6 +34,7 @@ function Header(props) {
             aria-haspopup="true"
             color="inherit"
             href="https://github.com/webfalcon/armscii-to-unicode-docx-js"
+            target="_blank"
           >
             <FaGithub />
           </IconButton>
@@ -44,6 +43,7 @@ function Header(props) {
             aria-haspopup="true"
             color="inherit"
             href="https://m.me/aramvardanyan.me"
+            target="_blank"
           >
             <FaFacebookMessenger />
           </IconButton>
@@ -52,6 +52,8 @@ function Header(props) {
             aria-haspopup="true"
             color="inherit"
             href="https://paypal.me/AramVardanyan"
+            target="_blank"
+            title="Աջակցել ծրագրի զարգացմանը"
           >
             <FaPaypal />
           </IconButton>
