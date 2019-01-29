@@ -46,7 +46,7 @@ function convertToUnicode(documentPath) {
 }
 function saveFile(filename) {
   const folderName = "output/" + makeid();
-  const newFileName = folderName + "/Converted" + filename;
+  const newFileName = folderName + "/Converted " + filename;
   fs.mkdirSync(folderName);
   return new Promise(function(resolve, reject) {
     var output = fs.createWriteStream(newFileName);
