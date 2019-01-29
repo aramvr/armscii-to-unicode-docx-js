@@ -3,7 +3,6 @@ import { FilePond } from "react-filepond";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Button from "@material-ui/core/Button";
 import styled from "styled-components";
-import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 
 import "filepond/dist/filepond.min.css";
 
@@ -27,13 +26,7 @@ class UploadFile extends Component {
       uploading: false
     };
   }
-  componentDidUpdate() {}
-  handleInit() {
-    console.log("FilePond instance has initialised", this.pond);
-  }
-
   upload = file => {
-    console.log(file);
     const ext = file.name.split(".").pop();
     if (ext !== "docx") {
       alert("Ֆայլի ֆորմատը սխալ է։");
