@@ -9,6 +9,11 @@ const fileName = makeid();
 
 const documentPath = `./extract/${fileName}/word/document.xml`;
 const archivePath = `${__dirname}/extract/${fileName}`;
+
+if (!fs.existsSync("output")) {
+  fs.mkdirSync("output");
+}
+
 const outputFile = `output/${fileName}.docx`;
 
 function extractDocx(uploadedDocument) {
