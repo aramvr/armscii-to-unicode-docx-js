@@ -43,7 +43,7 @@ class UploadFile extends Component {
     const formData = new FormData();
     formData.append("document", file);
 
-    fetch("http://localhost:3001/api/convert", {
+    fetch("http://unicode.aramvardanyan.me/api/convert", {
       // Your POST endpoint
       method: "POST",
       body: formData
