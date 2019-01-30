@@ -19,7 +19,6 @@ or in one line command :
 `npm install && cd server && npm install && cd ../client && npm install && cd ..`
 
 ## Run
-`npm start`
-It run both server and client side.
+`npm start` run both server and client side.
 
 
